@@ -5,10 +5,7 @@ fn main() -> Result<()> {
     let mut input = String::new();
     std::io::stdin().read_to_string(&mut input)?;
 
-    let expenses = input
-        .split_whitespace()
-        .map(|v| v.parse::<i32>().expect("Error: Parse input value."))
-        .collect::<Vec<i32>>();
+    let expenses = parse_input()?;
 
     for i in 0..expenses.len() {
         for j in i..expenses.len() {
@@ -22,4 +19,13 @@ fn main() -> Result<()> {
     }
 
     Ok(())
+}
+
+fn parse_input() -> Result<Vec<i32>> {
+    let mut input = String::new();
+    std::io::stdin().read_to_string(&mut input)?;
+
+    input.split_whitespace()
+        .map(|v| v.parse::<i32>().map_err(|err| anyhow::Error::new(err)))
+        .collect()
 }
